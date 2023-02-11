@@ -11,7 +11,7 @@ function checkToken(token) {
     return false;
   }
   try {
-    return jwt.verify(token, process.env.NODE_ENV !== 'production' ? JWT_SECRET : 'dev-secret');
+    return jwt.verify(token, process.env.NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (err) {
     return false;
   }
