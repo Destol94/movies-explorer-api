@@ -12,8 +12,9 @@ const { createUser, login, logout } = require('./controllers/users');
 const DocumentNotFoundError = require('./errors/DocumentNotFoundError');
 const checkAuth = require('./middlewares/auth');
 const limiter = require('./utils/limiter');
+const CONFIG = require('./utils/config');
 
-const { PORT = 3001 } = process.env;
+const { PORT = CONFIG.PORT, MONGO = CONFIG.MONGO } = process.env;
 
 const app = express();
 
@@ -56,7 +57,7 @@ app.use(errors());
 
 mongoose.set('strictQuery', true);
 mongoose.connect(
-  'mongodb://127.0.0.1:27017/bitfilmsdb',
+  MONGO,
   {
     useNewUrlParser: true,
   },
