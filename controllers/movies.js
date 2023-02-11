@@ -28,7 +28,7 @@ const deleteMovie = async (req, res, next) => {
     if (!movie) {
       throw new DocumentNotFoundError('Ошибка удаления фильма');
     }
-    if ((`"${req.user._id}"` === JSON.stringify(movie.owner._id))) {
+    if ((req.user._id === String(movie.owner._id))) {
       await Movie.findByIdAndDelete(id);
       return res.status(200).json(movie);
     }
