@@ -1,5 +1,5 @@
-const Unauthorized = require("../errors/Unauthorized");
-const { checkToken } = require("../utils/token");
+const Unauthorized = require('../errors/Unauthorized');
+const { checkToken } = require('../utils/token');
 
 const checkAuth = (req, res, next) => {
   const token = req.cookies.jwt;
@@ -8,6 +8,6 @@ const checkAuth = (req, res, next) => {
     return next();
   }
   throw new Unauthorized('Доступ запрещён');
-}
+};
 
 module.exports = checkAuth;

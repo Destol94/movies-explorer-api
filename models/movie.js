@@ -5,27 +5,27 @@ const { ObjectId } = require('mongoose/lib/types');
 const cardScheme = new mongoose.Schema({
   country: {
     type: String,
-    require: true,
+    required: true,
   },
   director: {
     type: String,
-    require: true,
+    required: true,
   },
   duration: {
     type: Number,
-    require: true,
+    required: true,
   },
   year: {
     type: String,
-    require: true,
+    required: true,
   },
   description: {
     type: String,
-    require: true,
+    required: true,
   },
   image: {
     type: String,
-    require: true,
+    required: true,
     validate: {
       validator(url) {
         return validator.isURL(url);
@@ -35,7 +35,7 @@ const cardScheme = new mongoose.Schema({
   },
   trailerLink: {
     type: String,
-    require: true,
+    required: true,
     validate: {
       validator(url) {
         return validator.isURL(url);
@@ -45,7 +45,7 @@ const cardScheme = new mongoose.Schema({
   },
   thumbnail: {
     type: String,
-    require: true,
+    required: true,
     validate: {
       validator(url) {
         return validator.isURL(url);
@@ -55,19 +55,19 @@ const cardScheme = new mongoose.Schema({
   },
   owner: {
     type: ObjectId,
-    require: true,
-    ref: 'user'
+    required: true,
+    ref: 'user',
   },
   movieId: {
     type: String,
-    require: true,
+    required: true,
   },
   nameRU: {
     type: String,
     required: true,
     validate: {
-      validator: function (v) {
-        return /[А-Яа-яеЁ\.\!\?\:\; ]*/.test(v);
+      validator(v) {
+        return /[А-Яа-яеЁ.!?:; ]*/.test(v);
       },
       message: 'Название фильма должно содержать русский алфавит, знаки препинания и пробелы',
     },
@@ -76,8 +76,8 @@ const cardScheme = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: function (v) {
-        return /[A-Za-z\.\!\?\:\; ]*/.test(v);
+      validator(v) {
+        return /[A-Za-z.!?:; ]*/.test(v);
       },
       message: 'Название фильма должно содержать англисйкий алфавит, знаки препинания и пробелы',
     },

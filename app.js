@@ -8,13 +8,16 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routerUser = require('./routes/users');
 const routerMovies = require('./routes/movies');
 const corsOptions = require('./utils/corsUtils');
-const { createUser, login } = require('./controllers/users');
+const { createUser, login, logout } = require('./controllers/users');
 const DocumentNotFoundError = require('./errors/DocumentNotFoundError');
 const checkAuth = require('./middlewares/auth');
+const limiter = require('./utils/limiter');
 
 const { PORT = 3000 } = process.env;
 
 const app = express();
+
+app.use(limiter);
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -34,14 +37,15 @@ app.post('/signup', celebrate({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
-  })
+  }),
 }), createUser);
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
-  })
+  }),
 }), login);
+app.post('/signout', logout);
 
 app.use('*', () => {
   throw new DocumentNotFoundError('Страница не найдена');
