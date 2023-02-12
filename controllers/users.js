@@ -8,7 +8,7 @@ const getUser = async (req, res, next) => {
   try {
     const user = await User.findById({ _id: req.user._id });
     if (!user) {
-      throw new DocumentNotFoundError('Ошибка получения пользователя');
+      throw new DocumentNotFoundError('Пользователь не найден');
     }
     return res.status(200).json({ email: user.email, name: user.name });
   } catch (err) {
@@ -29,7 +29,7 @@ const updateProfile = async (req, res, next) => {
       },
     );
     if (!user) {
-      throw new DocumentNotFoundError('Ошибка обновления');
+      throw new DocumentNotFoundError('Пользователь не найден');
     }
     return res.status(200).json(user);
   } catch (err) {
@@ -38,8 +38,7 @@ const updateProfile = async (req, res, next) => {
 };
 
 const createUser = async (req, res, next) => {
-  const body = { ...req.body };
-  const { email, name, password } = body;
+  const { email, name, password } = req.body;
   try {
     const hash = await bcrypt.hash(password, 10);
     const user = await User.create({ email, name, password: hash });
@@ -64,17 +63,14 @@ const login = async (req, res, next) => {
         httpOnly: true,
       }).json({ token });
     }
+    throw new Unauthorized('Неверный пользователь или пароль');
   } catch (err) {
     next(err);
   }
 };
 
-const logout = async (req, res, next) => {
-  try {
-    return res.status(200).clearCookie('jwt').json({ message: 'Выход выполнен' });
-  } catch (err) {
-    next(err);
-  }
+const logout = (req, res) => {
+  res.status(200).clearCookie('jwt').json({ message: 'Выход выполнен' });
 };
 
 module.exports = {

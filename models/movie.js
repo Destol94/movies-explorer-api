@@ -59,28 +59,16 @@ const cardScheme = new mongoose.Schema({
     ref: 'user',
   },
   movieId: {
-    type: String,
+    type: Number,
     required: true,
   },
   nameRU: {
     type: String,
     required: true,
-    validate: {
-      validator(v) {
-        return /[А-Яа-яеЁ.!?:; ]*/.test(v);
-      },
-      message: 'Название фильма должно содержать русский алфавит, знаки препинания и пробелы',
-    },
   },
   nameEN: {
     type: String,
     required: true,
-    validate: {
-      validator(v) {
-        return /[A-Za-z.!?:; ]*/.test(v);
-      },
-      message: 'Название фильма должно содержать англисйкий алфавит, знаки препинания и пробелы',
-    },
   },
 });
 

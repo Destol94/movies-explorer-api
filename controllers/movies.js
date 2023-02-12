@@ -12,9 +12,8 @@ const getSavesMovies = async (req, res, next) => {
 };
 
 const createMovie = async (req, res, next) => {
-  const body = { ...req.body };
   try {
-    const movie = await (await Movie.create({ ...body, owner: req.user._id })).populate(['owner']);
+    const movie = await (await Movie.create({ ...req.body, owner: req.user._id })).populate(['owner']);
     return res.status(200).json(movie);
   } catch (err) {
     next(err);
@@ -26,7 +25,7 @@ const deleteMovie = async (req, res, next) => {
   try {
     const movie = await Movie.findById(id);
     if (!movie) {
-      throw new DocumentNotFoundError('Ошибка удаления фильма');
+      throw new DocumentNotFoundError('Фильм не найден или уже удалён');
     }
     if ((req.user._id === String(movie.owner._id))) {
       await Movie.findByIdAndDelete(id);
