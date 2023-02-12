@@ -13,6 +13,7 @@ const DocumentNotFoundError = require('./errors/DocumentNotFoundError');
 const checkAuth = require('./middlewares/auth');
 const limiter = require('./utils/limiter');
 const CONFIG = require('./utils/config');
+const handlerErrors = require('./utils/handlerErrors');
 
 const { PORT = CONFIG.PORT, MONGO = CONFIG.MONGO } = process.env;
 
@@ -54,6 +55,9 @@ app.use('*', checkAuth, () => {
 
 app.use(errorLogger);
 app.use(errors());
+app.use((err, req, res, next) => {
+  handlerErrors(err, req, res, next);
+});
 
 mongoose.set('strictQuery', true);
 mongoose.connect(
