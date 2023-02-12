@@ -4,7 +4,7 @@ const Movie = require('../models/movie');
 
 const getSavesMovies = async (req, res, next) => {
   try {
-    const movies = await Movie.find({});
+    const movies = await Movie.find({ owner: req.user._id });
     return res.status(200).json(movies);
   } catch (err) {
     next(err);

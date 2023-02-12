@@ -46,9 +46,9 @@ app.post('/signin', celebrate({
     password: Joi.string().required(),
   }),
 }), login);
-app.post('/signout', logout);
+app.post('/signout', checkAuth, logout);
 
-app.use('*', () => {
+app.use('*', checkAuth, () => {
   throw new DocumentNotFoundError('Страница не найдена');
 });
 
