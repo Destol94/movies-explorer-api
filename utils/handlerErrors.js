@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-const handlerErrors = (err, req, res, next) => {
+const handlerErrors = (err, req, res) => {
   if (err.code === 11000) {
     return res.status(409).json({ message: 'Такой пользователь уже есть' });
   }

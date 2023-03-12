@@ -13,8 +13,12 @@ const getSavesMovies = async (req, res, next) => {
 
 const createMovie = async (req, res, next) => {
   try {
-    const movie = await (await Movie.create({ ...req.body, owner: req.user._id })).populate(['owner']);
-    return res.status(200).json(movie);
+    const searchRes = await Movie.findOne({ ...req.body, owner: req.user._id });
+    if (!searchRes) {
+      const movie = await Movie.create({ ...req.body, owner: req.user._id });
+      return res.status(200).json(movie);
+    }
+    throw new DocumentNotFoundError('Фильм уже добавлен в сохранённые');
   } catch (err) {
     next(err);
   }

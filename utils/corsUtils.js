@@ -9,8 +9,8 @@ const allowedCors = [
 
 const corsOptions = {
   origin: allowedCors,
-  optionsSuccesCode: 200,
-  Credential: true,
+  credentials: true,
+  optionsSuccessStatus: 200,
 };
 
 module.exports = corsOptions;

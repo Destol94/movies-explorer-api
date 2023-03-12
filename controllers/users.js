@@ -42,7 +42,13 @@ const createUser = async (req, res, next) => {
   try {
     const hash = await bcrypt.hash(password, 10);
     const user = await User.create({ email, name, password: hash });
-    return res.status(201).json({ _id: user._id });
+    const token = generateToken({ _id: user._id });
+    return res.status(200).cookie('jwt', token, {
+      maxAge: 3600000,
+      httpOnly: true,
+    }).json({
+      token, email: user.email, _id: user._id, name: user.name,
+    });
   } catch (err) {
     next(err);
   }
@@ -61,7 +67,8 @@ const login = async (req, res, next) => {
       return res.status(200).cookie('jwt', token, {
         maxAge: 3600000,
         httpOnly: true,
-      }).json({ token });
+        SameSite: 'none',
+      }).json({ email: user.email, _id: user._id, name: user.name });
     }
     throw new Unauthorized('Неверный пользователь или пароль');
   } catch (err) {
