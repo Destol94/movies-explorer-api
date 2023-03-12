@@ -5,6 +5,8 @@ const allowedCors = [
   'http://api.project-mesto.nomoredomains.club',
   'http://localhost:3000',
   'http://localhost:3001',
+  'http://my-diploma.nomoredomains.work/',
+  'https://my-diploma.nomoredomains.work/',
 ];
 
 const corsOptions = {
